@@ -1,0 +1,311 @@
+/dts-v1/;
+// version: 17
+// last_comp_version: 16
+// boot_cpuid_phys: 0x0
+
+/ {
+    #address-cells = <0x1>;
+    #size-cells = <0x1>;
+    compatible = "plxtech,nas7820", "plxtech,nas782x";
+    interrupt-parent = <0x1>;
+    model = "Pogoplug Pro";
+    chosen {
+        bootargs = "console=ttyS0,115200n8 earlyprintk=serial";
+    };
+    aliases {
+        serial0 = "/uart@44200000";
+        gpio0 = "/pinctrl/gpio@44000000";
+        gpio1 = "/pinctrl/gpio@44100000";
+        ethernet0 = "/ethernet@40400000";
+    };
+    memory {
+        device_type = "memory";
+        reg = <0x0 0x0>;
+    };
+    cpus {
+        cpu@0 {
+            compatible = "arm,arm11mpcore";
+        };
+    };
+    gic@47001000 {
+        compatible = "arm,arm11mp-gic";
+        interrupt-controller;
+        #interrupt-cells = <0x3>;
+        reg = <0x47001000 0x1000 0x47000100 0x100>;
+        linux,phandle = <0x1>;
+        phandle = <0x1>;
+    };
+    reset-controller@44E00034 {
+        compatible = "plxtech,nas782x-reset";
+        #reset-cells = <0x1>;
+        reg = <0x44E00034 0x8>;
+        linux,phandle = <0x3>;
+        phandle = <0x3>;
+    };
+    rps@44400000 {
+        compatible = "plxtech,nas782x-rps";
+        interrupt-controller;
+        #interrupt-cells = <0x1>;
+        reg = <0x44400000 0x14>;
+        interrupts = <0x0 0x5 0x304>;
+    };
+    oscillator {
+        compatible = "fixed-clock";
+        #clock-cells = <0x0>;
+        clock-frequency = <0x17D7840>;
+        linux,phandle = <0x2>;
+        phandle = <0x2>;
+    };
+    sysclk {
+        compatible = "fixed-factor-clock";
+        #clock-cells = <0x0>;
+        clock-div = <0x4>;
+        clock-mult = <0x1>;
+        clocks = <0x2>;
+        linux,phandle = <0x9>;
+        phandle = <0x9>;
+    };
+    plla@44e001f0 {
+        compatible = "plxtech,nas782x-plla";
+        #clock-cells = <0x0>;
+        clocks = <0x2>;
+        reg = <0x44E001F0 0x10>;
+        linux,phandle = <0x4>;
+        phandle = <0x4>;
+    };
+    pllb@44f001f0 {
+        compatible = "plxtech,nas782x-pllb";
+        #clock-cells = <0x0>;
+        clocks = <0x2>;
+        reg = <0x44F001F0 0x10>;
+        resets = <0x3 0x1F>;
+        linux,phandle = <0x7>;
+        phandle = <0x7>;
+    };
+    stdclk {
+        compatible = "plxtech,nas782x-stdclk";
+        #clock-cells = <0x1>;
+        clocks = <0x2>;
+        linux,phandle = <0x6>;
+        phandle = <0x6>;
+    };
+    twdclk {
+        compatible = "fixed-factor-clock";
+        #clock-cells = <0x0>;
+        clock-div = <0x2>;
+        clock-mult = <0x1>;
+        clocks = <0x4>;
+        linux,phandle = <0x8>;
+        phandle = <0x8>;
+    };
+    gmacclk {
+        compatible = "fixed-clock";
+        #clock-cells = <0x0>;
+        clock-frequency = <0x7735940>;
+        linux,phandle = <0xC>;
+        phandle = <0xC>;
+    };
+    pinctrl {
+        #address-cells = <0x1>;
+        #size-cells = <0x1>;
+        compatible = "plxtech,nas782x-pinctrl", "simple-bus";
+        ranges;
+        plxtech,mux-mask = <0xFFFFFFFF 0xCC0FFDF9 0xFC000E60 0xF03F7E0 0xF00C0FE0 0x3FFFF 0x37FFF 0x3FFF8 0xF00 0x3F7F3>;
+        gpio@44000000 {
+            compatible = "plxtech,nas782x-gpio";
+            reg = <0x44000000 0x100 0x44E00000 0x200>;
+            interrupts = <0x0 0x15 0x304>;
+            #gpio-cells = <0x2>;
+            gpio-controller;
+            interrupt-controller;
+            #interrupt-cells = <0x2>;
+            #gpio-lines = <0x20>;
+            linux,phandle = <0xF>;
+            phandle = <0xF>;
+        };
+        gpio@44100000 {
+            compatible = "plxtech,nas782x-gpio";
+            reg = <0x44100000 0x100 0x44F00000 0x200>;
+            interrupts = <0x0 0x16 0x304>;
+            #gpio-cells = <0x2>;
+            gpio-controller;
+            interrupt-controller;
+            #interrupt-cells = <0x2>;
+            #gpio-lines = <0x12>;
+            linux,phandle = <0x5>;
+            phandle = <0x5>;
+        };
+        uart0 {
+            uart0-0 {
+                plxtech,pins = <0x0 0x1E 0x5 0x0 0x0 0x1F 0x5 0x0>;
+                linux,phandle = <0xA>;
+                phandle = <0xA>;
+            };
+        };
+        gmac0 {
+            gmac0-0 {
+                plxtech,pins = <0x0 0x3 0x1 0x0 0x0 0x4 0x1 0x0>;
+                linux,phandle = <0xD>;
+                phandle = <0xD>;
+            };
+        };
+        nand0 {
+            nand0-0 {
+                plxtech,pins = <0x0 0xC 0x1 0x0 0x0 0xD 0x1 0x0 0x0 0xE 0x1 0x0 0x0 0xF 0x1 0x0 0x0 0x10 0x1 0x0 0x0 0x11 0x1 0x0 0x0 0x12 0x1 0x0 0x0 0x13 0x1 0x0 0x0 0x14 0x1 0x0 0x0 0x15 0x1 0x0 0x0 0x16 0x1 0x0 0x0 0x17 0x1 0x0 0x0 0x18 0x1 0x0>;
+                linux,phandle = <0xB>;
+                phandle = <0xB>;
+            };
+        };
+        leds {
+            leds-0 {
+                plxtech,pins = <0x0 0x2 0x0 0x0 0x1 0x10 0x0 0x0 0x1 0x11 0x0 0x0>;
+                linux,phandle = <0xE>;
+                phandle = <0xE>;
+            };
+        };
+    };
+    pcie-controller@47C00000 {
+        compatible = "plxtech,nas782x-pcie";
+        device_type = "pci";
+        #address-cells = <0x3>;
+        #size-cells = <0x2>;
+        ranges = <0x82000000 0x0 0x48000000 0x48000000 0x0 0x2000000 0xC2000000 0x0 0x4A000000 0x4A000000 0x0 0x1E00000 0x81000000 0x0 0x4BE00000 0x4BE00000 0x0 0x100000 0x80000000 0x0 0x4BF00000 0x4BF00000 0x0 0x100000>;
+        bus-range = <0x0 0x7F>;
+        reg = <0x47C00000 0x1000 0x47D00000 0x100 0x44A00000 0x10>;
+        #interrupt-cells = <0x1>;
+        interrupt-map-mask = <0x0 0x0 0x0 0x0>;
+        interrupt-map = <0x0 0x0 0x0 0x0 0x1 0x0 0x13 0x304>;
+        gpios = <0x5 0xC 0x0>;
+        clocks = <0x6 0x8 0x7>;
+        clock-names = "pcie", "busclk";
+        resets = <0x3 0x7 0x3 0xE>;
+        reset-names = "pcie", "phy";
+        plxtech,pcie-hcsl-bit = <0x2>;
+        plxtech,pcie-ctrl-offset = <0x120>;
+        plxtech,pcie-outbound-offset = <0x138>;
+        status = "okay";
+    };
+    pcie-controller@47E00000 {
+        compatible = "plxtech,nas782x-pcie";
+        device_type = "pci";
+        #address-cells = <0x3>;
+        #size-cells = <0x2>;
+        ranges = <0x82000000 0x0 0x4C000000 0x4C000000 0x0 0x2000000 0xC2000000 0x0 0x4E000000 0x4E000000 0x0 0x1E00000 0x81000000 0x0 0x4FE00000 0x4FE00000 0x0 0x100000 0x80000000 0x0 0x4FF00000 0x4FF00000 0x0 0x100000>;
+        bus-range = <0x80 0xFF>;
+        reg = <0x47E00000 0x1000 0x47F00000 0x100 0x44A00000 0x10>;
+        #interrupt-cells = <0x1>;
+        interrupt-map-mask = <0x0 0x0 0x0 0x0>;
+        interrupt-map = <0x0 0x0 0x0 0x0 0x1 0x0 0x14 0x304>;
+        clocks = <0x6 0xB 0x7>;
+        clock-names = "pcie", "busclk";
+        resets = <0x3 0x17 0x3 0xE>;
+        reset-names = "pcie", "phy";
+        plxtech,pcie-hcsl-bit = <0x3>;
+        plxtech,pcie-ctrl-offset = <0x124>;
+        plxtech,pcie-outbound-offset = <0x174>;
+        status = "disabled";
+    };
+    local-timer@47000600 {
+        compatible = "arm,arm11mp-twd-timer";
+        reg = <0x47000600 0x20>;
+        interrupts = <0x1 0xD 0x304>;
+        clocks = <0x8>;
+    };
+    watchdog@47000620 {
+        compatible = "mpcore_wdt";
+        reg = <0x47000620 0x20>;
+        interrupts = <0x1 0xE 0x304>;
+        clocks = <0x8>;
+    };
+    timer@44400200 {
+        compatible = "plxtech,nas782x-rps-timer";
+        reg = <0x44400200 0x40>;
+        clocks = <0x9>;
+    };
+    uart@44200000 {
+        compatible = "ns16550a";
+        reg = <0x44200000 0x100>;
+        clock-frequency = <0x5F5E10>;
+        interrupts = <0x0 0x17 0x304>;
+        reg-shift = <0x0>;
+        fifo-size = <0x10>;
+        reg-io-width = <0x1>;
+        current-speed = <0x1C200>;
+        no-loopback-test;
+        pinctrl-names = "default";
+        pinctrl-0 = <0xA>;
+        status = "okay";
+    };
+    sata@45900000 {
+        compatible = "plxtech,nas782x-sata";
+        reg = <0x45900000 0x20000 0x459A0000 0x40 0x459B0000 0x20 0x459E0000 0x2000 0x44900000 0xC 0x50000000 0x1000>;
+        interrupts = <0x0 0x12 0x304>;
+        clocks = <0x6 0x4>;
+        resets = <0x3 0xB 0x3 0xC 0x3 0xD>;
+        reset-names = "sata", "link", "phy";
+        nr-ports = <0x1>;
+        status = "okay";
+    };
+    nand@41000000 {
+        compatible = "plxtech,nand-nas782x", "gen_nand";
+        reg = <0x41000000 0x100000 0x41C00000 0x20>;
+        nand-ecc-mode = "soft";
+        clocks = <0x6 0x9>;
+        pinctrl-names = "default";
+        pinctrl-0 = <0xB>;
+        resets = <0x3 0xF>;
+        #address-cells = <0x1>;
+        #size-cells = <0x1>;
+        status = "okay";
+        partition@0 {
+            label = "boot";
+            reg = <0x0 0xE00000>;
+        };
+        partition@e00000 {
+            label = "ubi";
+            reg = <0xE00000 0x7200000>;
+        };
+    };
+    ethernet@40400000 {
+        compatible = "plxtech,nas782x-gmac", "snps,dwmac";
+        reg = <0x40400000 0x2000>;
+        interrupts = <0x0 0x8 0x304 0x0 0x11 0x304>;
+        interrupt-names = "macirq", "eth_wake_irq";
+        mac-address = [00 00 00 00 00 00];
+        phy-mode = "rgmii";
+        clocks = <0x6 0x7 0xC>;
+        clock-names = "gmac", "stmmaceth";
+        pinctrl-names = "default";
+        pinctrl-0 = <0xD>;
+        resets = <0x3 0x6>;
+        status = "okay";
+    };
+    ehci@40200100 {
+        compatible = "plxtech,nas782x-ehci";
+        reg = <0x40200100 0xF00>;
+        interrupts = <0x0 0x7 0x304>;
+        clocks = <0x6 0x6 0x7 0x6 0xC>;
+        clock-names = "usb", "refsrc", "phyref";
+        resets = <0x3 0x4 0x3 0x5 0x3 0x1A>;
+        reset-names = "host", "phya", "phyb";
+        plxtech,ehci_use_pllb;
+        status = "okay";
+    };
+    leds {
+        compatible = "gpio-leds";
+        pinctrl-names = "default";
+        pinctrl-0 = <0xE>;
+        blue {
+            label = "pogoplug:blue:internal";
+            gpios = <0xF 0x2 0x0>;
+        };
+        orange {
+            label = "pogoplug:orange:usr";
+            gpios = <0x5 0x10 0x1>;
+        };
+        green {
+            label = "pogoplug:green:usr";
+            gpios = <0x5 0x11 0x1>;
+        };
+    };
+};
